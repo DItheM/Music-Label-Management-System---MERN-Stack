@@ -13,7 +13,15 @@ const trackSchema = new Schema({
     },
     genre: {
         type: String,
-        required: true
+        required: false
+    },
+    targetStartDate: {
+        type: Date,
+        required: false
+    },
+    targetReleaseDate: {
+        type: Date,
+        required: false
     }
 }, {timestamps: true})
 

@@ -3,10 +3,10 @@ const mongoose = require("mongoose")
 
 // create new track
 const createTrack = async (req, res) => {
-    const {title, artistId, age} = req.body
+    // const {title, artistId, age} = req.body
 
     try {
-        const track = await Track.create({title, artistId, age})
+        const track = await Track.create({...req.body})
         res.status(200).json(track)
     } catch (error) {
         res.status(400).json({error: e.message})
