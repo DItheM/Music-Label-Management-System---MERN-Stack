@@ -7,14 +7,14 @@ const trackSchema = new Schema({
         type: String,
         required: true
     },
-    artistName: {
+    artistId: {
         type: String,
         required: true
     },
-    age: {
-        type: Number,
+    genre: {
+        type: String,
         required: true
     }
 }, {timestamps: true})
 
-module.exports = mongoose.model("track", trackSchema)
+module.exports = mongoose.model("trackModel", trackSchema)
