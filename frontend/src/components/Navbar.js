@@ -1,10 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
+import SignInModel from "./SignInModal";
+import { useState } from "react";
 
 const Navbar = () => {
     const location = useLocation();
+
+    const [showSignInModal, setShowSignInModal] = useState(false);
+
+    const handleShow = () => setShowSignInModal(true);
+    const handleClose = () => setShowSignInModal(false);
     
     return (
         <header>
+            <SignInModel show={showSignInModal} handleClose={handleClose} />
             <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">dRECORDS.</a>
@@ -26,6 +34,7 @@ const Navbar = () => {
                                 <Link 
                                     to="/tracks" 
                                     className={`nav-link ${location.pathname === '/tracks' ? 'active' : ''}`}
+                                    aria-current={location.pathname === '/tracks' ? 'page' : undefined}
                                 >
                                     Tracks
                                 </Link>
@@ -34,6 +43,7 @@ const Navbar = () => {
                                 <Link 
                                     to="/artists" 
                                     className={`nav-link ${location.pathname === '/artists' ? 'active' : ''}`}
+                                    aria-current={location.pathname === '/artists' ? 'page' : undefined}
                                 >
                                     Artists
                                 </Link>
@@ -43,6 +53,9 @@ const Navbar = () => {
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button className="btn btn-outline-success" type="submit">Search</button>
                         </form>
+                        <div>
+                            <button className="btn btn-outline-light" onClick={handleShow}>Sign In</button>
+                        </div>
                     </div>
                 </div>
             </nav>
