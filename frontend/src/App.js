@@ -4,14 +4,13 @@ import Navbar from './components/Navbar';
 import Tracks from './pages/Tracks';
 import Artists from './pages/Artists';
 import { useAuth } from './contexts/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
+import SignInModel from './components/SignInModal';
+import { useSignIn } from './contexts/SignInContext';
 
 function App() {
   const { isSignIn } = useAuth();
-  const [showSignInModal, setShowSignInModal] = useState(false);
-
-  const handleShow = () => setShowSignInModal(true);
-  const handleClose = () => setShowSignInModal(false);
+  const {handleShow} = useSignIn();
 
   // Determines the route element based on sign-in status
   const getRouteElement = (Component) => {
@@ -31,7 +30,8 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar handleClose={handleClose} handleShow={handleShow} showSignInModal={showSignInModal} />
+        <Navbar/>
+        <SignInModel/>
         <div className="pages">
           <Routes>
             <Route path="/" element={<Navigate to="/home" replace />} />
