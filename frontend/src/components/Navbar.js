@@ -1,19 +1,58 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignInModel from "./SignInModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ip } from "../Services/Service";
+import { useAuth } from "../contexts/AuthContext";
 
-const Navbar = () => {
+const Navbar = ({handleShow, handleClose, showSignInModal}) => {
     const location = useLocation();
 
-    const [showSignInModal, setShowSignInModal] = useState(false);
+    const { isSignIn, setIsSignIn } = useAuth();
 
-    const handleShow = () => setShowSignInModal(true);
-    const handleClose = () => setShowSignInModal(false);
-    
+    const [username, setUsername] = useState(null);
+    const [password, setPassword] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSignIn = async () => {
+        setIsLoading(true)
+        const auth = { username, password }
+        const response = await fetch(ip + '/signin', {
+            method: 'POST',
+            body: JSON.stringify(auth),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const json = await response.json()
+
+        if (response.ok) {
+            handleClose();
+            setIsSignIn(true);
+            setIsLoading(false);
+        } else {
+            setIsSignIn(false);
+            setIsLoading(false);
+        }
+    };
+
+    const handleSignOut = () => {
+        setIsSignIn(false)
+    };
+
     return (
         <header>
-            <SignInModel show={showSignInModal} handleClose={handleClose} />
-            <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+            <SignInModel 
+                show={showSignInModal} 
+                handleClose={handleClose} 
+                setUsername={setUsername} 
+                setPassword={setPassword}
+                handleSignin={handleSignIn}
+                isLoading={isLoading}
+            />
+
+            <nav className="navbar navbar-expand-lg navbar-dark bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">dRECORDS.</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,18 +88,31 @@ const Navbar = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                        <div>
-                            <button className="btn btn-outline-light" onClick={handleShow}>Sign In</button>
-                        </div>
+
+                        
+                        {isSignIn ? (
+                            <div className="d-flex w-100 justify-content-between align-items-center">
+                                <form className="d-flex mx-auto" role="search">
+                                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                    <button className="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                                <div className="d-flex align-items-center px-3 py-2">
+                                    <div className="mb-0 me-2">
+                                        <p className="text-light mb-0 me-2">Signed in as:</p>
+                                        <p className="text-primary mb-0 me-2">admin</p>
+                                    </div>
+
+                                    <button className="btn btn-outline-danger" onClick={handleSignOut}>Sign Out</button>
+                                </div>
+                            </div>
+                        ) : (
+                            <button className="btn btn-outline-light d-flex" onClick={handleShow}>Sign In</button>
+                        )}
                     </div>
                 </div>
             </nav>
         </header>
-    )
+    );
 }
 
 export default Navbar;
