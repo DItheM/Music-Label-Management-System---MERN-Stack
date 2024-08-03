@@ -8,6 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import EditArtistModal from '../components/EditArtistModal'; // Import EditArtistModal component
 import { useSearch } from '../contexts/SearchContext';
+import Swal from 'sweetalert2';
 
 const Artists = () => {
     const [artists, setArtists] = useState([]);
@@ -38,6 +39,22 @@ const Artists = () => {
         }
     };
 
+    const handleMainDelete = (artistId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                handleDelete(artistId)
+            }
+          });
+    }
+
     const handleDelete = async (artistId) => {
         try {
             const response = await fetch(`${ip}/artists/${artistId}`, {
@@ -48,6 +65,11 @@ const Artists = () => {
                 // Remove the artist from the state
                 setArtists(artists.filter(artist => artist._id !== artistId));
                 setFilteredArtists(filteredArtists.filter(artist => artist._id !== artistId));
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Artist has been deleted.",
+                    icon: "success"
+                  });
             } else {
                 const error = await response.json();
                 console.log(error.error);
@@ -118,7 +140,7 @@ const Artists = () => {
                                 <div className="d-flex justify-content-between">
                                     <Button
                                         variant="danger"
-                                        onClick={() => handleDelete(artist._id)}
+                                        onClick={() => handleMainDelete(artist._id)}
                                         className="mt-2"
                                     >
                                         Delete

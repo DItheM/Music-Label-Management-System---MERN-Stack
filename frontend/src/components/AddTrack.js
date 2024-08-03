@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import { ip } from '../Services/Service';
+import Swal from 'sweetalert2';
 
 const AddTrack = ({refreshTracks}) => {
     const [title, setTitle] = useState('');
@@ -51,6 +52,13 @@ const AddTrack = ({refreshTracks}) => {
                 setSuggestions([]);
                 setIsArtistSelected(false);
                 refreshTracks()
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Track Added",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
             } else {
                 const error = await response.json();
                 console.error('Error:', error);

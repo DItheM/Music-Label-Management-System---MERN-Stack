@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ip } from '../Services/Service';
+import Swal from 'sweetalert2';
 
 const EditArtistModal = ({ show, handleClose, artist, refreshArtists }) => {
     const [formData, setFormData] = useState({ ...artist });
@@ -25,6 +26,13 @@ const EditArtistModal = ({ show, handleClose, artist, refreshArtists }) => {
             if (response.ok) {
                 refreshArtists();
                 handleClose();
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Track Updated",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
             } else {
                 console.log('Error updating artist:', await response.json());
             }

@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { ip } from '../Services/Service';
+import Swal from 'sweetalert2';
 
 const EditTrackModal = ({ show, handleClose, track, refreshTracks }) => {
     const [formData, setFormData] = useState({
@@ -77,6 +78,13 @@ const EditTrackModal = ({ show, handleClose, track, refreshTracks }) => {
             if (response.ok) {
                 refreshTracks();
                 handleClose();
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Artist Updated",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
             } else {
                 const error = await response.json();
                 console.log(error.error);

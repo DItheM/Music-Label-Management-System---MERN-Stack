@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import EditTrackModal from '../components/EditTrackModal'; // Import the EditTrackModal component
 import ArtistDetailsModal from '../components/ArtistDetailsModal'; // Import the ArtistDetailsModal component
 import { useSearch } from '../contexts/SearchContext';
+import Swal from 'sweetalert2';
 
 const Tracks = () => {
     const [tracks, setTracks] = useState([]);
@@ -78,6 +79,22 @@ const Tracks = () => {
         }
     };
 
+    const handleMainDelete = (artistId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                handleDelete(artistId)
+            }
+          });
+    }
+
     const handleDelete = async (trackId) => {
         try {
             const response = await fetch(`${ip}/tracks/${trackId}`, {
@@ -88,6 +105,11 @@ const Tracks = () => {
                 // Remove the track from the state
                 setTracks(tracks.filter(track => track._id !== trackId));
                 setFilteredTracks(filteredTracks.filter(track => track._id !== trackId));
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Track has been deleted.",
+                    icon: "success"
+                  });
             } else {
                 const error = await response.json();
                 console.log(error.error);
@@ -181,7 +203,7 @@ const Tracks = () => {
                                     <div className="d-flex justify-content-between">
                                         <Button
                                             variant="danger"
-                                            onClick={() => handleDelete(track._id)}
+                                            onClick={() => handleMainDelete(track._id)}
                                             className="mt-2"
                                         >
                                             Delete

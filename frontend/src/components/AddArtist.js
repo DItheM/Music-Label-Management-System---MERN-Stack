@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import { ip } from '../Services/Service'; // Adjust import based on your file structure
+import Swal from 'sweetalert2';
 
 const AddArtist = ({fetchArtists}) => {
     const [name, setName] = useState('');
@@ -39,6 +40,13 @@ const AddArtist = ({fetchArtists}) => {
                 setCountry('');
                 setBirthdate('');
                 fetchArtists()
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Artist Added",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
