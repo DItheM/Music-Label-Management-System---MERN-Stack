@@ -25,7 +25,8 @@ const SignInModal = () => {
         setError(null)
     }
 
-    const handleSignIn = async () => {
+    const handleSignIn = async (event) => {
+        event.preventDefault()
         setIsLoading(true);
         const auth = { username, password };
         try {
@@ -67,7 +68,7 @@ const SignInModal = () => {
             <Modal.Header closeButton>
                 <Modal.Title>Sign In</Modal.Title>
             </Modal.Header>
-            <Form>
+            <Form onSubmit={handleSignIn}>
                 <Modal.Body>
                     <Form.Group className="mb-3" controlId="formBasicUsername">
                         <Form.Label>Username</Form.Label>
@@ -96,7 +97,7 @@ const SignInModal = () => {
                     </Button>
                     <Button 
                         variant="primary" 
-                        onClick={handleSignIn} 
+                        type='submit'
                         disabled={isLoading}
                     >
                         {isLoading ? (

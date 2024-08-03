@@ -14,7 +14,7 @@ const router = express.Router()
 router.post('/', createTrack)
 
 // get all tracks
-router.get('/', getTracks)
+router.get('/get', getTracks)
 
 // get a single track
 router.get('/:id', getSingleTrack)

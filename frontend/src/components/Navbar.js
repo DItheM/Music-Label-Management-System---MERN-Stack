@@ -1,12 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
-import { useSignIn } from "../contexts/SignInContext";
+import { useSignIn } from '../contexts/SignInContext';
+import { useSearch } from '../contexts/SearchContext';
 
 const Navbar = () => {
     const location = useLocation();
     const { isSignIn, setIsSignIn } = useAuth();
-    const {handleShow} = useSignIn();
+    const { handleShow } = useSignIn();
+    const { searchTerm, updateSearchTerm } = useSearch(); 
 
     const getSearchPlaceholder = () => {
         switch (location.pathname) {
@@ -38,6 +41,10 @@ const Navbar = () => {
                 });
             }
         });
+    };
+
+    const handleSearchChange = (event) => {
+        updateSearchTerm(event.target.value);
     };
 
     return (
@@ -88,8 +95,10 @@ const Navbar = () => {
                                             type="search" 
                                             placeholder={getSearchPlaceholder()} 
                                             aria-label="Search" 
+                                            value={searchTerm} // Set input value from context
+                                            onChange={handleSearchChange} // Update context on change
                                         />
-                                        <button className="btn btn-outline-success" type="submit">Search</button>
+                                        {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
                                     </form>
                                 ) : (<div></div>)}
                                 
@@ -100,9 +109,9 @@ const Navbar = () => {
                                     <button className="btn btn-outline-danger" onClick={handleSignOut}>Sign Out</button>
                                 </div>
                             </div>
-                        ) : ((
+                        ) : (
                             <button className="btn btn-outline-light" onClick={handleShow}>Sign In</button>
-                        ))}
+                        )}
                     </div>
                 </div>
             </nav>

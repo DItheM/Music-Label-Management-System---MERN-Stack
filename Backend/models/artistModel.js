@@ -15,7 +15,7 @@ const artistModel = new Schema({
         type: String,
         required: true
     },
-    Country: {
+    country: {
         type: String,
         required: true
     },

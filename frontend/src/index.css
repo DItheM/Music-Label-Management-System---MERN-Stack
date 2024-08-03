@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.pages {
+  padding: 10px;
+}
+
+.artist-link {
+  text-decoration: underline; /* Underline the artist name */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  color: #007bff; /* Optional: Add color to match the primary color */
+}
+
+.artist-link:hover {
+  text-decoration: underline; /* Ensure underline stays on hover */
+}
+

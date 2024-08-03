@@ -4,7 +4,8 @@ const {
     getArtists,
     getSingleArtist,
     deleteArtist,
-    updateArtist
+    updateArtist,
+    searchArtist
 } = require("../controllers/artistController")
 
 const router = express.Router()
@@ -13,7 +14,7 @@ const router = express.Router()
 router.post('/', createArtist)
 
 // get all Artists
-router.get('/', getArtists)
+router.get('/get', getArtists)
 
 // get a single Artist
 router.get('/:id', getSingleArtist)
@@ -23,5 +24,8 @@ router.delete('/:id', deleteArtist)
 
 // update Artist
 router.patch('/:id', updateArtist)
+
+// search Artist
+router.get('/', searchArtist)
 
 module.exports = router
